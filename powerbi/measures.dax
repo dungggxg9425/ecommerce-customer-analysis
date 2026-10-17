@@ -1,0 +1,65 @@
+// =====================================================================
+//  Measure DAX cho dashboard Olist – tạo trong bảng fact_orders
+//  (Modeling > New measure, dán từng measure)
+// =====================================================================
+
+Doanh thu =
+SUM ( fact_orders[revenue] )
+
+So don =
+COUNTROWS ( fact_orders )
+
+So khach =
+DISTINCTCOUNT ( fact_orders[customer_unique_id] )
+
+Gia tri don TB =
+DIVIDE ( [Doanh thu], [So don] )
+
+// Tỷ lệ đơn giao trễ so với ngày giao dự kiến
+Ty le giao tre =
+DIVIDE (
+    CALCULATE ( [So don], fact_orders[is_late] = 1 ),
+    [So don]
+)
+
+Diem danh gia TB =
+AVERAGE ( fact_orders[review_score] )
+
+So ngay giao TB =
+AVERAGE ( fact_orders[delivery_days] )
+
+// Tỷ lệ đánh giá 1–2 sao
+Ty le danh gia xau =
+DIVIDE (
+    CALCULATE ( [So don], fact_orders[review_score] <= 2 ),
+    [So don]
+)
+
+// Tăng trưởng so với tháng trước (dùng với trục dim_date[year_month])
+Doanh thu thang truoc =
+CALCULATE ( [Doanh thu], DATEADD ( dim_date[date], -1, MONTH ) )
+
+Tang truong MoM =
+DIVIDE ( [Doanh thu] - [Doanh thu thang truoc], [Doanh thu thang truoc] )
+
+// Tăng trưởng cùng kỳ năm trước
+Doanh thu cung ky =
+CALCULATE ( [Doanh thu], SAMEPERIODLASTYEAR ( dim_date[date] ) )
+
+Tang truong YoY =
+DIVIDE ( [Doanh thu] - [Doanh thu cung ky], [Doanh thu cung ky] )
+
+// Tỷ trọng doanh thu của phân khúc / danh mục đang chọn trên tổng
+Ty trong doanh thu =
+DIVIDE ( [Doanh thu], CALCULATE ( [Doanh thu], ALL ( dim_customer_rfm[phan_khuc] ) ) )
+
+// Doanh thu hàng hóa theo danh mục – tạo trong bảng fact_order_items
+Doanh thu hang hoa =
+SUM ( fact_order_items[price] )
+
+// Tỷ lệ khách chỉ mua một lần
+Ty le khach mua 1 lan =
+DIVIDE (
+    CALCULATE ( COUNTROWS ( dim_customer_rfm ), dim_customer_rfm[frequency] = 1 ),
+    COUNTROWS ( dim_customer_rfm )
+)

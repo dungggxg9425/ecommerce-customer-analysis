@@ -1,0 +1,12 @@
+bang,van_de,so_dong
+orders,Thiếu ngày giao cho khách (tất cả trạng thái),2965
+orders,"Trạng thái 'delivered' nhưng thiếu ngày giao (gắn cờ, loại khỏi phân tích giao hàng)",8
+reviews,Đơn có nhiều đánh giá – giữ đánh giá mới nhất,559
+products,Sửa tên cột viết sai chính tả ('lenght' -> 'length'),2
+products,Thiếu danh mục sản phẩm -> gán 'unknown',610
+products,Danh mục chưa có bản dịch tiếng Anh -> dịch thủ công,13
+orders,Bản ghi trùng theo khóa ['order_id'],0
+customers,Bản ghi trùng theo khóa ['customer_id'],0
+items,"Bản ghi trùng theo khóa ['order_id', 'order_item_id']",0
+payments,"Bản ghi trùng theo khóa ['order_id', 'payment_sequential']",0
+payments,Giá trị thanh toán <= 0 -> loại,9

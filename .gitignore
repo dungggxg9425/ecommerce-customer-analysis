@@ -1,0 +1,6 @@
+# Dữ liệu thô và trung gian (tải lại bằng scripts/get_data.sh, tạo lại bằng src/)
+data/raw/*.csv
+data/processed/
+data/olist.db
+__pycache__/
+.ipynb_checkpoints/
